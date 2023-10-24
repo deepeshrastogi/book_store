@@ -1,0 +1,157 @@
+{
+	"info": {
+		"_postman_id": "3d0f7549-a155-41c0-8636-221b32a5db4f",
+		"name": "Books_Store",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12098968",
+		"_collection_link": "https://localaza.postman.co/workspace/localaza~7e9e3352-fa27-4cd7-9bd2-71ade0af10e2/collection/12098968-3d0f7549-a155-41c0-8636-221b32a5db4f?action=share&source=collection_link&creator=12098968"
+	},
+	"item": [
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Deepesh Rastogi\",\r\n    \"email\":\"deepesh12@yopmail.com\",\r\n    \"password\":\"deepesh@123\",\r\n    \"password_confirmation\":\"deepesh@123\"\r\n}"
+						},
+						"url": "{{local}}customer/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"deepesh@yopmail.com\",\r\n    \"password\":\"deepesh@yopmail.com\"\r\n}"
+						},
+						"url": "{{local}}customer/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODEvYXBpL2N1c3RvbWVyL3JlZnJlc2giLCJpYXQiOjE2OTgxNjY3NzUsImV4cCI6MTY5ODE3MDQ3NywibmJmIjoxNjk4MTY2ODc3LCJqdGkiOiI4THQxN1dwaHlIdllRajZPIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.cenzbmvEbn242j5wv1EnYDkL9j44InnWZJC95W23dvA"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{local}}customer/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODEvYXBpL2N1c3RvbWVyL2xvZ2luIiwiaWF0IjoxNjk4MTY2Nzc1LCJleHAiOjE2OTgxNzAzNzUsIm5iZiI6MTY5ODE2Njc3NSwianRpIjoiR2xGcjBpVWp4OEZzR1FmUSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.RD7pdP8V_kzKShb_xXpIGWTNUpddbX0hkLgmu5g9e8c"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{local}}customer/refresh"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODEvYXBpL2N1c3RvbWVyL3JlZnJlc2giLCJpYXQiOjE2OTgxNjY3NzUsImV4cCI6MTY5ODE3MDQ3NywibmJmIjoxNjk4MTY2ODc3LCJqdGkiOiI4THQxN1dwaHlIdllRajZPIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.cenzbmvEbn242j5wv1EnYDkL9j44InnWZJC95W23dvA"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{local}}customer/logout"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
