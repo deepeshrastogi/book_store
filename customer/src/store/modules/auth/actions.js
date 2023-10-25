@@ -1,4 +1,4 @@
-import { SIGNUP_ACTION,SET_USER_TOKEN_DATA_MUTATION } from "@/store/storeConstants";
+import { SIGNUP_ACTION,SET_USER_TOKEN_DATA_MUTATION,LOADING_SPINNER_SHOW_MUTATION } from "@/store/storeConstants";
 import axios from "axios";
 
 export default {
@@ -10,6 +10,9 @@ export default {
             password_confirmation:payload.password_confirmation,
         }
         let response = '';
+        // context.commit(LOADING_SPINNER_SHOW_MUTATION,true,{
+        //     root:true
+        // });
         const headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -19,10 +22,17 @@ export default {
                 headers: headers
             });
         }catch(err){
+            // context.commit(LOADING_SPINNER_SHOW_MUTATION,false,{
+            //     root:true
+            // });
             let errors = err.response.data;
             throw errors;
             // err.response.data.email[0];
         }
+
+        // context.commit(LOADING_SPINNER_SHOW_MUTATION,false,{
+        //     root:true
+        // });
 
         if(response.status === 201){
             let responseTokenData = response.data.token.original;

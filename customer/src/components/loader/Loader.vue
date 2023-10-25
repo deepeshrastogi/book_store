@@ -22,9 +22,11 @@ export default {
 <style>
 
 .loader{
-    width: 70px;
+    width: 40%;
     height: 70px;
-    margin: 40px auto;
+    position:fixed;
+    top:25%;
+    margin: 0% 0% 0% 28%;
 }
 .loader p{
     font-size: 16px;
@@ -32,6 +34,7 @@ export default {
 }
 .loader .loader-inner{
     display: inline-block;
+    position:relative;
     width: 15px;
     border-radius: 15px;
     background: #74d2ba;
