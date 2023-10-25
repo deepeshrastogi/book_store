@@ -24,7 +24,10 @@ Route::group(['middleware' => 'api','prefix' => 'customer'], function ($router) 
     Route::get('/profile', [AuthController::class, 'userProfile']);    
 });
 
-Route::controller(BookController::class)->prefix('books')->group(function () {
-    Route::get('/', 'index');
-    Route::get('/{id}', 'show');
+Route::middleware('api')->group(function(){
+    Route::controller(BookController::class)->prefix('books')->group(function () {
+        Route::get('/', 'index');
+        Route::get('/{id}', 'show');
+    });
 });
+

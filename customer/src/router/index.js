@@ -2,12 +2,24 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Dashboard from '../views/customer/pages/DashboardView.vue';
 import Books from '../views/customer/books/Books.vue'
 import Book from '../views/customer/books/BookDetails.vue'
+import Login from '../views/auth/Login.vue'
+import Signup from '../views/auth/Signup.vue'
 
 const routes = [
   {
     path: '/',
     name: 'dashboard',
     component: Dashboard
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: Signup
   },
   {
     path: '/books',
