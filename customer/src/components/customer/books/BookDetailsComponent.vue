@@ -40,6 +40,8 @@
 
 <script>
 import axios from 'axios';
+import { mapGetters } from 'vuex';
+import { SET_USER_TOKEN_GETTER } from "@/store/storeConstants";
 export default {
     name:'BookDetailsComponent',
     data(){
@@ -60,6 +62,9 @@ export default {
         }
     },
     computed:{
+        ...mapGetters('auth',{
+            token : SET_USER_TOKEN_GETTER
+        }),
         imageUrl(){
             return this.book.image_path +'/' + this.book.image;
         }
@@ -69,8 +74,15 @@ export default {
     },
     methods:{
         getBookDetails(){
+            let config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + this.token
+                },
+            }
             this.id = this.$route.params.id;
-            axios.get(`${this.apiUrl}/books/${this.id}`).then(res => {
+            axios.get(`${this.apiUrl}/books/${this.id}`,config).then(res => {
                 if(res.data.is_data === true){
                     this.book = res.data.data;
                 }else{

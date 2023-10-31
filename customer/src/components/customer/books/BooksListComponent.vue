@@ -75,9 +75,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import { SET_USER_TOKEN_GETTER } from "@/store/storeConstants";
 import axios from 'axios';
 import PaginationComponent from '../../pagination/pagination.vue';
 import LoaderComponent from '../../loader/Loader.vue';
+
 export default {
     name:'BooksListComponent',
     components:{
@@ -108,6 +111,11 @@ export default {
             search_keyword:'',
         }
     },
+    computed: {
+        ...mapGetters('auth',{
+            token : SET_USER_TOKEN_GETTER
+        }),
+    },
     created(){
         this.successMessage = this.$route.query.message;
         setTimeout(() => {
@@ -118,16 +126,23 @@ export default {
         // this.getBooks();
     },
     methods:{
-        getBooks(){
+        async getBooks(){
+            let response = '';
             if(this.search_keyword !=''){
                 this.loaderVisibility = true;
-                axios.get(`${this.apiUrl}/books`,{
+                let config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + this.token
+                    },
                     params: {
                         page: this.pagination.current_page,
                         per_page: this.pagination.per_page,
-                        search_keyword: this.search_keyword,
-                    }
-                }).then(res => {
+                        search_keyword: this.search_keyword
+                    },
+                }
+                await axios.get(`${this.apiUrl}/books`,config).then(res => {
                     this.loaderVisibility = false;
                     if(res.data.is_data === true){
                         this.books = res.data.data.data;

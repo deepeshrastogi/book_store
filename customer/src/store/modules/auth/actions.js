@@ -1,7 +1,37 @@
-import { SIGNUP_ACTION,SET_USER_TOKEN_DATA_MUTATION,LOADING_SPINNER_SHOW_MUTATION } from "@/store/storeConstants";
+import { SIGNUP_ACTION,SET_USER_TOKEN_DATA_MUTATION,LOADING_SPINNER_SHOW_MUTATION, LOGIN_ACTION } from "@/store/storeConstants";
 import axios from "axios";
 
 export default {
+    async [LOGIN_ACTION](context,payload){
+        let postData = {
+            email:payload.email,
+            password:payload.password
+        }
+        
+        let response = '';
+        const headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        }
+        try{
+            response = await axios.post(`http://localhost:8081/api/customer/login`,postData,{
+                headers: headers
+            });
+        }catch(err){
+            let errors = err.response.data;
+            throw errors;
+        }
+        console.log("response",response.status);
+        if(response.status === 200){
+            context.commit(SET_USER_TOKEN_DATA_MUTATION,{
+                name:response.data.user.name,
+                email:response.data.user.email,
+                id:response.data.user.id,
+                token:response.data.access_token,
+                expireIn:response.data.expires_in
+            });
+        }
+    },
     async [SIGNUP_ACTION](context,payload){
         let postData = {
             name:payload.name,

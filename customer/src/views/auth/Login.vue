@@ -2,6 +2,7 @@
     <div class="row align-items-center mt-5">
         <div class="col-md-4 offset-md-4">
             <h3>Login</h3>
+            <div class="alert alert-danger" v-if="error">{{error}}</div>
             <form @submit.prevent="onLogin()" >
                 <div class="form-floating mb-3">
                     <input class="form-control" id="inputEmail" type="email" placeholder="Enter your email" v-model.trim="email" />
@@ -29,7 +30,9 @@
 </template>
 
 <script>
+import { mapActions, mapMutations } from 'vuex';
 import SignupValidation from '../../services/SignupValidations';
+import { LOGIN_ACTION,LOADING_SPINNER_SHOW_MUTATION } from "@/store/storeConstants";
 export default {
     name:'Login',
     data(){
@@ -37,15 +40,41 @@ export default {
             email:'',
             password:'',
             errors:[],
+            error:''
         }
     },
     methods:{
-        onLogin(){
+        ...mapActions('auth',{
+            login: LOGIN_ACTION
+        }),
+        ...mapMutations({
+            showLoading:LOADING_SPINNER_SHOW_MUTATION
+        }),
+        async onLogin(){
            let validations = new SignupValidation(this.email,this.password);
            this.errors = validations.checkValidations();
            if(this.errors.length){
              return false;
            }
+           this.error = '';
+           this.showLoading(true);
+           try{
+               await this.login({'email':this.email,'password':this.password});
+           }catch(err){
+                if('email' in err){
+                    this.error = err.email[0];
+                }else if('password' in err){
+                    this.error = err.password[0];
+                }else{
+                    //Unauthorized
+                    this.error = err.error;
+                }
+                this.showLoading(false);
+                return false;
+           }
+           this.showLoading(false);
+           this.$router.push({name: 'books',query: { title: 'Login Successfully' } });
+
         }
     }
 }
