@@ -83,8 +83,10 @@ export default {
                     this.error = error.password_confirmation[0]
                 }
                 this.showLoading(false);
+                return false;
             });
             this.showLoading(false);
+            this.$router.push({name: 'books',query: { title: 'Login Successfully' } });
         }
     }
 }

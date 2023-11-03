@@ -75,7 +75,7 @@ export default {
            this.showLoading(false);
            this.$router.push({name: 'books',query: { title: 'Login Successfully' } });
 
-        }
+        },
     }
 }
 </script>

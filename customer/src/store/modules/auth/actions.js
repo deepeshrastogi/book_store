@@ -14,14 +14,14 @@ export default {
             'Accept': 'application/json',
         }
         try{
-            response = await axios.post(`http://localhost:8081/api/customer/login`,postData,{
+            response = await axios.post(process.env.VUE_APP_API_URL+`/customer/login`,postData,{
                 headers: headers
             });
         }catch(err){
             let errors = err.response.data;
             throw errors;
         }
-        console.log("response",response.status);
+
         if(response.status === 200){
             context.commit(SET_USER_TOKEN_DATA_MUTATION,{
                 name:response.data.user.name,
