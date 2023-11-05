@@ -18,6 +18,10 @@
                             <router-link class="nav-link" :to="{name:'books'}">Books</router-link>
                         </nav>
                     </div>
+                    <a href="#" class="nav-link" @click.prevent="onLogOut">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Logout
+                    </a>
                 </div>
             </div>
         </nav>
@@ -25,7 +29,18 @@
 </template>
 
 <script>
+import {LOGOUT_ACTION} from '@/store/storeConstants';
+import { mapActions } from 'vuex';
 export default {
     name: 'SidebarComponent',
+    methods:{
+        ...mapActions('auth',{
+            logout:LOGOUT_ACTION
+        }),
+        onLogOut(){
+            this.logout();
+            this.$router.replace('/login');
+        }
+    }
 }
 </script>

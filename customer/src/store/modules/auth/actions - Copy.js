@@ -1,9 +1,8 @@
-import { SIGNUP_ACTION,SET_USER_TOKEN_DATA_MUTATION,LOADING_SPINNER_SHOW_MUTATION, LOGIN_ACTION,LOGOUT_ACTION,AUTO_LOGIN_ACTION } from "@/store/storeConstants";
+import { SIGNUP_ACTION,SET_USER_TOKEN_DATA_MUTATION,LOADING_SPINNER_SHOW_MUTATION, LOGIN_ACTION,LOGOUT_ACTION } from "@/store/storeConstants";
 import axios from "axios";
 
 export default {
     [LOGOUT_ACTION](context){
-        localStorage.removeItem('userData');
         context.commit(SET_USER_TOKEN_DATA_MUTATION,{
             name:null,
             email:null,
@@ -33,15 +32,13 @@ export default {
         }
 
         if(response.status === 200){
-            let userData = {
+            context.commit(SET_USER_TOKEN_DATA_MUTATION,{
                 name:response.data.user.name,
                 email:response.data.user.email,
                 id:response.data.user.id,
                 token:response.data.access_token,
                 expireIn:response.data.expires_in
-            };
-            localStorage.setItem('userData',JSON.stringify(userData));
-            context.commit(SET_USER_TOKEN_DATA_MUTATION,userData);
+            });
         }
     },
     async [SIGNUP_ACTION](context,payload){
@@ -77,21 +74,14 @@ export default {
         // });
 
         if(response.status === 201){
-            let userData = {
-                name:response.data.user.name,
-                email:response.data.user.email,
-                id:response.data.user.id,
-                token:response.data.access_token,
-                expireIn:response.data.expires_in
-            };
-            localStorage.setItem('userData',JSON.stringify(userData));
-            context.commit(SET_USER_TOKEN_DATA_MUTATION,userData);
-        }
-    },
-    [AUTO_LOGIN_ACTION](context){
-        let userData = localStorage.getItem('userData');
-        if(userData){
-            context.commit(SET_USER_TOKEN_DATA_MUTATION,JSON.parse(userData));
+            let responseTokenData = response.data.token.original;
+            context.commit(SET_USER_TOKEN_DATA_MUTATION,{
+                name:responseTokenData.user.name,
+                email:responseTokenData.user.email,
+                id:responseTokenData.user.id,
+                token:responseTokenData.access_token,
+                expireIn:responseTokenData.expires_in
+            });
         }
     }
 };
