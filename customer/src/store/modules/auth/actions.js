@@ -1,17 +1,16 @@
-import { SIGNUP_ACTION,SET_USER_TOKEN_DATA_MUTATION,LOADING_SPINNER_SHOW_MUTATION, LOGIN_ACTION,LOGOUT_ACTION,AUTO_LOGIN_ACTION } from "@/store/storeConstants";
+import { 
+    SIGNUP_ACTION,
+    SET_USER_TOKEN_DATA_MUTATION,
+    LOADING_SPINNER_SHOW_MUTATION, 
+    LOGIN_ACTION,
+    LOGOUT_ACTION,
+    AUTO_LOGIN_ACTION,
+    AUTO_LOGOUT_ACTION,
+    SET_AUTO_LOGOUT_MUTATION
+} from "@/store/storeConstants";
 import axios from "axios";
-
+let timer = '';
 export default {
-    [LOGOUT_ACTION](context){
-        localStorage.removeItem('userData');
-        context.commit(SET_USER_TOKEN_DATA_MUTATION,{
-            name:null,
-            email:null,
-            id:null,
-            token:null,
-            expireIn:null
-        });
-    },
     async [LOGIN_ACTION](context,payload){
         let postData = {
             email:payload.email,
@@ -33,12 +32,17 @@ export default {
         }
 
         if(response.status === 200){
+            let expirationTime = +response.data.expires_in * 1000;
+            timer = setTimeout(() => {
+                context.dispatch(AUTO_LOGOUT_ACTION)
+            },expirationTime);
+
             let userData = {
                 name:response.data.user.name,
                 email:response.data.user.email,
                 id:response.data.user.id,
                 token:response.data.access_token,
-                expireIn:response.data.expires_in
+                expireIn:expirationTime
             };
             localStorage.setItem('userData',JSON.stringify(userData));
             context.commit(SET_USER_TOKEN_DATA_MUTATION,userData);
@@ -88,10 +92,38 @@ export default {
             context.commit(SET_USER_TOKEN_DATA_MUTATION,userData);
         }
     },
-    [AUTO_LOGIN_ACTION](context){
-        let userData = localStorage.getItem('userData');
-        if(userData){
-            context.commit(SET_USER_TOKEN_DATA_MUTATION,JSON.parse(userData));
+    [LOGOUT_ACTION](context){
+        localStorage.removeItem('userData');
+        context.commit(SET_USER_TOKEN_DATA_MUTATION,{
+            name:null,
+            email:null,
+            id:null,
+            token:null,
+            expireIn:null
+        });
+        if(timer){
+            clearTimeout(timer);
         }
+    },
+    [AUTO_LOGIN_ACTION](context){
+        let userDataString = localStorage.getItem('userData');
+        if(userDataString){
+            let userData = JSON.parse(userDataString);
+            let expirationTime = userData.expireIn - new Date().getTime();
+            if(expirationTime < 10000){
+                context.dispatch(AUTO_LOGOUT_ACTION);
+            }else{
+                timer = setTimeout(()=>{
+                    context.dispatch(AUTO_LOGOUT_ACTION)
+                },expirationTime);
+            }
+            context.commit(SET_USER_TOKEN_DATA_MUTATION,userData);
+        }
+    },
+    [AUTO_LOGOUT_ACTION](context){
+        context.dispatch(LOGOUT_ACTION);
+        context.commit(SET_AUTO_LOGOUT_MUTATION);
     }
+    
+
 };

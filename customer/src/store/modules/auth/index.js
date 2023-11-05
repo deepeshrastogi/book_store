@@ -11,7 +11,8 @@ export default {
             id:'',
             token:'',
             refreshToken:'',
-            expireIn:''
+            expireIn:'',
+            autoLogout:false
         };
     },
     mutations,

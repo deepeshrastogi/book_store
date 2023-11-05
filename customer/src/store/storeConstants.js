@@ -6,6 +6,8 @@ export const SET_USER_TOKEN_GETTER = '[getters] auth user token';
 export const IS_USER_AUTHENTICATE_GETTER = '[getters] is user authenticated';
 export const LOGOUT_ACTION = '[actions] logout user';
 export const AUTO_LOGIN_ACTION = '[actions] auto login user';
+export const AUTO_LOGOUT_ACTION = '[actions] auto logout user';
+export const SET_AUTO_LOGOUT_MUTATION = '[mutations] set auto logout';
 
 export const GET_BOOKS_ACTION = '[actions] get books list';
 export const SET_BOOKS_DATA_MUTATION = '[mutations] set books data';

@@ -18,11 +18,19 @@ export default {
   },
   computed:{
     ...mapState({
-      showLoading:(state) => state.showLoading
+      showLoading:(state) => state.showLoading,
+      autoLogout:(state) => state.auth.autoLogout
     }),
     ...mapGetters('auth',{
       isUserAuthenticated:IS_USER_AUTHENTICATE_GETTER
     }),
+  },
+  watch:{
+    autoLogout(curValue,oldValue){
+        if(curValue && curValue != oldValue){
+            this.$router.replace('/login');
+        }
+    }
   },
   created(){
     this.$store.dispatch(`auth/${AUTO_LOGIN_ACTION}`);
